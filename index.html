@@ -50,7 +50,7 @@
   --charcoal: #1E1E1E;
   --dark: #252525;
   --mid: #3A3A3A;
-  --muted: #6B6B6B;
+  --muted: #D0D0D0;
   --light: #F5F3EF;
   --white: #FFFFFF;
   --red: #C0392B;
@@ -150,6 +150,25 @@ body {
 .section-label:first-child { margin-top: 0; }
 .card { background: var(--charcoal); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
 .card-gold { border-color: rgba(201,168,76,0.22); background: linear-gradient(135deg, var(--charcoal), rgba(201,168,76,0.04)); }
+
+/* Return to Running */
+.nav-card-run { border-color: rgba(201,168,76,0.30); background: linear-gradient(135deg, var(--charcoal), rgba(201,168,76,0.06)); }
+.rtr-phase-head { display: flex; align-items: center; gap: 10px; margin: 6px 0 14px; }
+.rtr-phase-pill { font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black); background: var(--gold); padding: 5px 12px; border-radius: 20px; }
+.rtr-phase-focus { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 400; font-style: italic; color: var(--gold-light); }
+.rtr-flow { position: relative; }
+.rtr-block { display: flex; gap: 13px; background: var(--charcoal); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 14px 14px 14px 12px; }
+.rtr-block-hl { border-color: rgba(201,168,76,0.45); background: linear-gradient(135deg, var(--dark), rgba(201,168,76,0.07)); }
+.rtr-step { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--black); font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.rtr-block-hl .rtr-step { box-shadow: 0 0 0 4px rgba(201,168,76,0.18); }
+.rtr-body { flex: 1; }
+.rtr-body h4 { font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); margin-bottom: 7px; }
+.rtr-body ul { list-style: none; }
+.rtr-body li { position: relative; padding-left: 15px; font-size: 13px; line-height: 1.55; color: var(--light); font-weight: 300; margin-bottom: 4px; }
+.rtr-body li::before { content: ''; position: absolute; left: 2px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+.rtr-block-hl .rtr-body li { font-size: 14px; color: var(--white); font-weight: 400; }
+.rtr-note { font-size: 11px; color: var(--muted); font-style: italic; font-weight: 300; margin-top: 6px; }
+.rtr-connector { width: 2px; height: 14px; background: linear-gradient(var(--gold-dark), var(--gold)); margin-left: 24px; opacity: 0.5; }
 .intro-card p { font-size: 12px; color: var(--muted); line-height: 1.7; font-weight: 300; }
 
 /* progress pill */
@@ -369,10 +388,10 @@ body {
       <h3>My Program</h3>
       <p>Today's exercises</p>
     </div>
-    <div class="nav-card" onclick="showPage('program'); showProgramTab('progress')">
-      <span class="nav-icon">&#128202;</span>
-      <h3>My Progress</h3>
-      <p>Consistency &amp; logs</p>
+    <div class="nav-card nav-card-run" onclick="showPage('rtr')">
+      <span class="nav-icon">&#127939;</span>
+      <h3>Return to Running</h3>
+      <p>Your run day plan</p>
     </div>
     <div class="nav-card" onclick="showPage('goals')">
       <span class="nav-icon">&#127919;</span>
@@ -441,6 +460,19 @@ body {
     <div class="card" id="goals-list"></div>
     <div class="section-label">Why This Matters</div>
     <div class="card"><p id="philosophy-text" style="font-size:12px;color:var(--muted);line-height:1.8;font-weight:300;"></p></div>
+  </div>
+</div>
+
+<!-- ==================== RETURN TO RUNNING ==================== -->
+<div id="page-rtr" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showHome()">&#8592; Home</button>
+    <h2>Return to Running</h2>
+    <p class="page-sub">Your run day plan</p>
+  </div>
+  <div class="page-content">
+    <div class="card card-gold intro-card"><p id="rtr-intro"></p></div>
+    <div id="rtr-phases"></div>
   </div>
 </div>
 
@@ -551,9 +583,28 @@ const goals = [
   { title: 'Settle the Calf Pain at Its Source', desc: 'Treat the real driver, the neural tension, instead of chasing the calf muscle that is only where you feel it.' },
   { title: 'Free Up the Nerve', desc: 'Restore the sciatic nerve\'s ability to glide so it stops referring pain down into the calf.' },
   { title: 'Rebuild Calf and Hip Strength', desc: 'Load the calf through its full range and shore up the hip and core so the chain stops irritating the nerve.' },
+  { title: 'Run Again, Stronger', desc: 'Return to running at a 9 minute per mile pace and build back to 30 to 40 miles per week, with the calf and nerve fully settled.' },
   { title: 'Back to Full Activity', desc: 'Return to walking, training, and daily life without the calf flaring up.' },
 ];
 const philosophy = 'Your calf hurts, but the muscle is not the problem. The pain is referred from neural tension along the sciatic nerve. The daily nerve glides restore the nerve\'s ability to slide, the core and mobility work take pressure off it, and the calf and hip strengthening rebuild the chain that lets it all settle. Stay consistent and the calf quiets down as the nerve frees up.';
+
+// --- RETURN TO RUNNING -----------------------------------------------
+// Do the whole sequence in order on run days. Add a new phase object to
+// rtrPhases after each visit. Only the phases listed here are shown.
+const rtrIntro = 'This is your run day plan. Do the whole sequence in order, start to finish. New phases are added after each visit once Kelly has cleared you to progress, so only work the phase shown here.';
+const rtrPhases = [
+  {
+    label: 'Phase 1',
+    focus: 'Run and Walk Intervals',
+    blocks: [
+      { title: 'Prep First', items: ['Nerve glides', 'Pretzels', 'Break the stick'], note: 'Your usual mobility work, before anything else.' },
+      { title: 'Dynamic Warm-Up', items: ['High knees, 10 down and back', 'Butt kicks, 10 down and back', 'Zombie walks, 10 down and back', 'Inch worms, 10 total'] },
+      { title: 'Prime the Legs', items: ['Walk 2 minutes or more'] },
+      { title: 'Run Intervals', items: ['Jog 5 minutes, then walk 2 minutes', 'Repeat 4 times'], highlight: true },
+      { title: 'Cool Down', items: ['Walk 2 to 5 minutes', 'Static stretch, holding each at least 30 seconds: gastrocnemius, soleus, hamstrings, quadriceps, adductors, IT band'] },
+    ],
+  },
+];
 
 // --- PRECAUTIONS -----------------------------------------------------
 const precautions = {
@@ -621,6 +672,7 @@ function showPage(id) {
   document.getElementById('bottom-nav').style.display = 'flex';
   if (id === 'program') renderToday();
   if (id === 'goals') renderGoals();
+  if (id === 'rtr') renderRtr();
   if (id === 'precautions') renderPrecautions();
   if (id === 'report') renderReport();
   window.scrollTo(0, 0);
@@ -951,6 +1003,27 @@ function renderGoals() {
     <div class="goal-text"><h4>${g.title}</h4><p>${g.desc}</p></div>
   </div>`).join('');
   document.getElementById('philosophy-text').textContent = philosophy;
+}
+function renderRtr() {
+  document.getElementById('client-name-hero').textContent = CLIENT_NAME;
+  document.getElementById('rtr-intro').textContent = rtrIntro;
+  document.getElementById('rtr-phases').innerHTML = rtrPhases.map(phase => {
+    const blocks = phase.blocks.map((b, i) => `
+      <div class="rtr-block${b.highlight ? ' rtr-block-hl' : ''}">
+        <span class="rtr-step">${i + 1}</span>
+        <div class="rtr-body">
+          <h4>${b.title}</h4>
+          <ul>${b.items.map(it => `<li>${it}</li>`).join('')}</ul>
+          ${b.note ? `<p class="rtr-note">${b.note}</p>` : ''}
+        </div>
+      </div>`).join('<div class="rtr-connector"></div>');
+    return `
+      <div class="rtr-phase-head">
+        <span class="rtr-phase-pill">${phase.label}</span>
+        <span class="rtr-phase-focus">${phase.focus}</span>
+      </div>
+      <div class="rtr-flow">${blocks}</div>`;
+  }).join('');
 }
 function renderPrecautions() {
   document.getElementById('redflags-list').innerHTML = precautions.redFlags.map(f => `<li>${f}</li>`).join('');
