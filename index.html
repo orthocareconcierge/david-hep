@@ -365,6 +365,22 @@ body {
   #page-report .page-header { display: none !important; }
   #print-area { margin: 0 !important; border-radius: 0 !important; }
 }
+
+/* ===================== STRENGTH ===================== */
+.str-params{font-size:11px;color:var(--gold);text-align:center;margin-bottom:14px;letter-spacing:0.03em;font-weight:300;line-height:1.6;}
+.str-day-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.str-day-btn{background:var(--charcoal);border:1px solid rgba(201,168,76,0.18);border-radius:8px;padding:12px 5px;color:var(--muted);font-family:'Jost',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.03em;cursor:pointer;}
+.str-day-btn.active{border-color:var(--gold);color:var(--white);background:linear-gradient(135deg,var(--charcoal),rgba(201,168,76,0.08));}
+.str-card{background:var(--charcoal);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:13px;margin-bottom:10px;}
+.str-name{font-size:14px;font-weight:500;color:var(--white);line-height:1.25;}
+.str-cue{font-size:12px;color:var(--muted);font-weight:300;line-height:1.5;margin:3px 0 10px;}
+.str-log{border-top:1px solid rgba(255,255,255,0.06);padding-top:9px;}
+.str-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.str-rn{font-size:11px;color:var(--gold);width:26px;flex-shrink:0;letter-spacing:0.04em;}
+.str-in{flex:1;background:var(--dark);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:var(--white);font-family:'Jost',sans-serif;font-size:12px;padding:7px 8px;min-width:0;}
+.str-in::placeholder{color:var(--mid);}
+.str-in:focus{outline:none;border-color:var(--gold);}
+.str-add{background:none;border:1px dashed rgba(201,168,76,0.3);color:var(--gold);border-radius:6px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:6px;width:100%;cursor:pointer;margin-top:3px;}
 </style>
 </head>
 <body>
@@ -392,6 +408,11 @@ body {
       <span class="nav-icon">&#127939;</span>
       <h3>Return to Running</h3>
       <p>Your run day plan</p>
+    </div>
+    <div class="nav-card" onclick="showPage('strength')">
+      <span class="nav-icon">&#128170;</span>
+      <h3>Strength</h3>
+      <p>Circuit training</p>
     </div>
     <div class="nav-card" onclick="showPage('goals')">
       <span class="nav-icon">&#127919;</span>
@@ -476,6 +497,23 @@ body {
   </div>
 </div>
 
+<!-- ==================== STRENGTH ==================== -->
+<div id="page-strength" class="page">
+  <div class="page-header">
+    <button class="back-btn" onclick="showHome()">&#8592; Home</button>
+    <h2>Strength</h2>
+    <p class="page-sub">Circuit training</p>
+  </div>
+  <div class="page-content">
+    <div class="card card-gold intro-card"><p id="str-intro"></p></div>
+    <div class="str-params" id="str-params"></div>
+    <div class="section-label">Pick Today's Day</div>
+    <div class="str-day-row" id="str-day-row"></div>
+    <div class="section-label">Circuit</div>
+    <div id="str-list"></div>
+  </div>
+</div>
+
 <!-- ==================== PRECAUTIONS ==================== -->
 <div id="page-precautions" class="page">
   <div class="page-header">
@@ -522,6 +560,7 @@ body {
   <button class="bottom-nav-btn" onclick="showPage('program'); showProgramTab('progress')"><span class="nav-ico">&#128202;</span><span class="nav-lbl">Progress</span></button>
   <button class="bottom-nav-btn" onclick="showPage('goals')"><span class="nav-ico">&#127919;</span><span class="nav-lbl">Goals</span></button>
   <button class="bottom-nav-btn" onclick="showPage('precautions')"><span class="nav-ico" style="color:var(--gold)">&#9888;&#65038;</span><span class="nav-lbl">Safety</span></button>
+  <button class="bottom-nav-btn" onclick="showPage('strength')"><span class="nav-ico">&#128170;</span><span class="nav-lbl">Strength</span></button>
   <button class="bottom-nav-btn" onclick="showHome()"><span class="nav-ico">&#127968;</span><span class="nav-lbl">Home</span></button>
 </div>
 
@@ -613,9 +652,40 @@ const rtrPhases = [
       { title: 'Dynamic Warm-Up', items: ['High knees, 10 down and back', 'Butt kicks, 10 down and back', 'Zombie walks, 10 down and back', 'Inch worms, 10 total'] },
       { title: 'Prime the Legs', items: ['Walk 2 minutes or more'] },
       { title: 'Run Intervals', items: ['Jog 5 minutes, then walk 2 minutes', 'Repeat 4 times'], highlight: true },
+      { title: 'How To Progress', items: ['Grow the running and shrink the walking first: 5 and 2, then 7 and 1, then 10 and 1, then continuous, before adding much distance.', 'Once you are running continuously, add distance by about 10 percent per week, building toward 20 miles per week.', 'Step up only when the calf is quiet the next day. If it flares, hold there or drop back a step.', 'Run 2 to 3 times per week. The calf is the gate on every progression.'], note: 'Progress is earned, not scheduled. Let the calf lead.' },
       { title: 'Cool Down', items: ['Walk 2 to 5 minutes', 'Static stretch, holding each at least 30 seconds: gastrocnemius, soleus, hamstrings, quadriceps, adductors, IT band'] },
     ],
   },
+];
+
+// --- STRENGTH (circuit) ----------------------------------------------
+const strengthIntro = 'Strength work, 2 to 3 times per week, circuit style. Pick a day below, then move through its exercises as a circuit: do all of them, rest 1 to 2 minutes, then repeat for 3 to 4 total rounds. Log your reps and weight as you go. Keep the heaviest leg day off your hardest run day, and let the calf be your guide.';
+const strengthParams = '3 to 4 rounds  ·  8 to 12 reps (calf 12 to 15)  ·  30 to 45 sec between moves  ·  1 to 2 min between rounds';
+const strengthDays = [
+  { key:'ue', label:'Upper Body', exercises:[
+    { name:'Bench Press (Barbell or DB)', note:'Control the lower, stop just short of locking out at the top.' },
+    { name:'Seated Cable Row or Bent Over Row', note:'Row to your ribs, squeeze the shoulder blades, keep the neck long.' },
+    { name:'Overhead Press (DB or Barbell)', note:'Press up without flaring the ribs or arching the low back.' },
+    { name:'Lat Pulldown', note:'Full but controlled range, no yanking or leaning back hard.' },
+    { name:'Biceps Curl and Triceps Pushdown (superset)', note:'Controlled tempo, elbows quiet, no swinging.' },
+    { name:'Finisher: Prone T or Y, or ER at 90', note:'Light. Lift from the lower shoulder blades, not the neck.' }
+  ]},
+  { key:'le', label:'Lower Body', exercises:[
+    { name:'Back or Goblet Squat', note:'Knees track over the toes, to a depth you control.' },
+    { name:'Romanian Deadlift', note:'Hips back, long flat back, feel the hamstrings, then stand tall.' },
+    { name:'Reverse or Walking Lunge', note:'Front knee over the ankle, drive through the front heel.' },
+    { name:'Single Leg Press', note:'Control both directions, do not slam into a locked knee.' },
+    { name:'Single Leg Calf Raise', note:'Your priority. Slow up and slow down, 12 to 15 reps each side.' },
+    { name:'Weighted Glute Bridge (Double Leg)', note:'Drive through the heels, squeeze the glutes, keep the ribs down.' }
+  ]},
+  { key:'core', label:'Full / Core', exercises:[
+    { name:'Trap Bar or DB Deadlift', note:'Flat back, push the floor away, stand tall and controlled.' },
+    { name:'Loaded Carry (Farmer or Suitcase)', note:'Tall and braced, do not let the weight side bend you.' },
+    { name:'Box Step Ups', note:'Drive through the whole foot, control the way down.' },
+    { name:'Pallof Press (Anti-Rotation)', note:'Resist the twist, hold tall and still, then switch sides.' },
+    { name:'Side Plank', note:'Straight line, hips high and stacked, do not let the bottom hip drop.' },
+    { name:'Dead Bug or Bird Dog', note:'Move from a braced trunk with the back flat.' }
+  ]}
 ];
 
 // --- PRECAUTIONS -----------------------------------------------------
@@ -670,6 +740,31 @@ function saveAll() {
   } catch(e) {}
 }
 
+// ---------- STRENGTH (circuit) ----------
+let strDay = (typeof hepLog['str-day'] === 'string') ? hepLog['str-day'] : 'ue';
+function setStrDay(k){ strDay = k; hepLog['str-day'] = k; saveAll(); renderStrength(); }
+function strSets(day, i){ const k = 'str-' + day + '-' + i; const a = hepLog[k]; return (Array.isArray(a) && a.length) ? a : [{},{},{}]; }
+function strSet(day, i, ri, field, val){ const k = 'str-' + day + '-' + i; let a = hepLog[k]; if (!Array.isArray(a) || !a.length) a = [{},{},{}]; if (!a[ri]) a[ri] = {}; a[ri][field] = val; hepLog[k] = a; saveAll(); }
+function strAddRound(day, i){ const k = 'str-' + day + '-' + i; const a = strSets(day, i).slice(); a.push({}); hepLog[k] = a; saveAll(); renderStrength(); }
+function renderStrength(){
+  document.getElementById('str-intro').textContent = strengthIntro;
+  document.getElementById('str-params').textContent = strengthParams;
+  document.getElementById('str-day-row').innerHTML = strengthDays.map(function(d){
+    return '<button class="str-day-btn' + (strDay === d.key ? ' active' : '') + '" onclick="setStrDay(\'' + d.key + '\')">' + d.label + '</button>';
+  }).join('');
+  const day = strengthDays.find(function(d){ return d.key === strDay; }) || strengthDays[0];
+  document.getElementById('str-list').innerHTML = day.exercises.map(function(ex, i){
+    const sets = strSets(day.key, i);
+    const rows = sets.map(function(s, ri){
+      return '<div class="str-row"><span class="str-rn">R' + (ri+1) + '</span>' +
+        '<input class="str-in" inputmode="numeric" placeholder="reps" value="' + (s.reps || '') + '" onchange="strSet(\'' + day.key + '\',' + i + ',' + ri + ',\'reps\',this.value)">' +
+        '<input class="str-in" placeholder="weight" value="' + (s.wt || '') + '" onchange="strSet(\'' + day.key + '\',' + i + ',' + ri + ',\'wt\',this.value)"></div>';
+    }).join('');
+    return '<div class="str-card"><div class="str-name">' + ex.name + '</div><div class="str-cue">' + ex.note + '</div>' +
+      '<div class="str-log">' + rows + '<button class="str-add" onclick="strAddRound(\'' + day.key + '\',' + i + ')">+ round</button></div></div>';
+  }).join('');
+}
+
 // ---------- NAVIGATION ----------
 function showHome() {
   document.getElementById('splash').style.display = 'flex';
@@ -685,6 +780,7 @@ function showPage(id) {
   if (id === 'program') renderToday();
   if (id === 'goals') renderGoals();
   if (id === 'rtr') renderRtr();
+  if (id === 'strength') renderStrength();
   if (id === 'precautions') renderPrecautions();
   if (id === 'report') renderReport();
   window.scrollTo(0, 0);
