@@ -381,6 +381,13 @@ body {
 .str-in::placeholder{color:var(--mid);}
 .str-in:focus{outline:none;border-color:var(--gold);}
 .str-add{background:none;border:1px dashed rgba(201,168,76,0.3);color:var(--gold);border-radius:6px;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:6px;width:100%;cursor:pointer;margin-top:3px;}
+.str-phase{background:linear-gradient(135deg,var(--charcoal),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.22);border-radius:12px;padding:13px 14px;margin-bottom:12px;}
+.str-phase-h{font-family:'Cormorant Garamond',serif;font-size:19px;color:#E2C97E;font-weight:400;margin-bottom:4px;}
+.str-phase-sub{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin:9px 0 5px;font-weight:600;}
+.str-phase-p{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;}
+.str-phase-ul{list-style:none;margin:0;padding:0;}
+.str-phase-ul li{font-size:12px;color:var(--muted);line-height:1.55;padding-left:14px;position:relative;margin-bottom:5px;font-weight:300;}
+.str-phase-ul li::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;border-radius:50%;background:var(--gold);}
 </style>
 </head>
 <body>
@@ -659,27 +666,40 @@ const rtrPhases = [
 ];
 
 // --- STRENGTH (circuit) ----------------------------------------------
-const strengthIntro = 'Strength work, 2 to 3 times per week, circuit style. Pick a day below, then move through its exercises as a circuit: do all of them, rest 1 to 2 minutes, then repeat for 3 to 4 total rounds. Log your reps and weight as you go. Keep the heaviest leg day off your hardest run day, and let the calf be your guide.';
+const strengthIntro = 'Strength work, 2 to 3 times per week, circuit style. Pick a day below. Start with the warm-up, then move through the exercises as a circuit: do all of them, rest 1 to 2 minutes, then repeat for 3 to 4 total rounds, and finish with the cool-down. Log your reps and weight as you go. Keep the heaviest leg day off your hardest run day, and let the calf be your guide.';
 const strengthParams = '3 to 4 rounds  ·  8 to 12 reps (calf 12 to 15)  ·  30 to 45 sec between moves  ·  1 to 2 min between rounds';
+const warmupCardio = '5 minutes of brisk cardio to get your heart rate up. Incline treadmill walk, rower, elliptical, or bike, whatever you have. Your pick.';
+const cooldownText = '5 minutes of easy, steady cardio to bring your heart rate down to a calm, steady state, then the static stretches below. Breathe, no bouncing, and stay out of sharp pain.';
 const strengthDays = [
-  { key:'ue', label:'Upper Body', exercises:[
-    { name:'Bench Press (Barbell or DB)', note:'Control the lower, stop just short of locking out at the top.' },
-    { name:'Seated Cable Row or Bent Over Row', note:'Row to your ribs, squeeze the shoulder blades, keep the neck long.' },
-    { name:'Overhead Press (DB or Barbell)', note:'Press up without flaring the ribs or arching the low back.' },
-    { name:'Lat Pulldown', note:'Full but controlled range, no yanking or leaning back hard.' },
-    { name:'Biceps Curl and Triceps Pushdown (superset)', note:'Controlled tempo, elbows quiet, no swinging.' },
-    { name:'Finisher: Prone T or Y, or ER at 90', note:'Light. Lift from the lower shoulder blades, not the neck.' }
+  { key:'ue', label:'Upper Body',
+    warmup:['Arm circles, small to big, forward then back','Band pull-aparts, 15 reps','Slow controlled shoulder circles (shoulder CARs)','Open books / thoracic rotations, 6 each side','Scap push-ups or wall slides, 10 reps'],
+    stretches:['Doorway pec stretch, each side','Cross-body shoulder stretch, each side','Overhead triceps and lat stretch, each side','Gentle upper trap and neck stretch, each side'],
+    exercises:[
+    { name:'Dumbbell Bench Press', note:'On a bench or the floor, dumbbells at your chest, press up over your shoulders and lower under control. Stop just short of locking out.' },
+    { name:'Bent Over Row (Dumbbell)', note:'Hinge forward with a flat back, row the dumbbells to your ribs, squeeze the shoulder blades, keep your neck long.' },
+    { name:'Overhead Press (Dumbbell)', note:'Press the dumbbells overhead without flaring your ribs or arching your low back.' },
+    { name:'Banded Lat Pulldown', note:'Anchor a band overhead. Pull down toward your chest with a controlled range, no yanking or leaning back. Do one set wide-grip (hands wide, palms forward) and one set palms-in (narrow, neutral grip).' },
+    { name:'Biceps Curl + Skull Crusher (superset)', note:'Superset: dumbbell biceps curls straight into lying dumbbell skull crushers (lower toward your forehead, extend back up). Controlled tempo, elbows quiet, no swinging.' },
+    { name:'Finisher - pick one', note:'Choose whichever your shoulders want today and do a couple of easy sets: (1) Prone T or Y, light, lift from the lower shoulder blades; (2) ER at 90 with a band; (3) Band pull-aparts or face pulls.' }
   ]},
-  { key:'le', label:'Lower Body', exercises:[
-    { name:'Back or Goblet Squat', note:'Knees track over the toes, to a depth you control.' },
-    { name:'Romanian Deadlift', note:'Hips back, long flat back, feel the hamstrings, then stand tall.' },
-    { name:'Reverse or Walking Lunge', note:'Front knee over the ankle, drive through the front heel.' },
-    { name:'Single Leg Press', note:'Control both directions, do not slam into a locked knee.' },
-    { name:'Single Leg Calf Raise', note:'Your priority. Slow up and slow down, 12 to 15 reps each side.' },
-    { name:'Weighted Glute Bridge (Double Leg)', note:'Drive through the heels, squeeze the glutes, keep the ribs down.' }
+  { key:'le', label:'Lower Body',
+    warmup:['Leg swings, front-to-back and side-to-side, each leg','Hip 90/90 switches, 6 each side','Bodyweight squats, 10 slow','Walking lunges with a reach, 5 each side','Ankle rockers, knee over toe, 8 each side','Glute bridges, 12 to wake up the glutes'],
+    stretches:['Standing or couch quad stretch, each side','Hamstring stretch, each side','Figure-4 glute stretch, each side','Calf stretch at a wall, straight knee and bent knee, each side','Half-kneeling hip flexor stretch, each side'],
+    exercises:[
+    { name:'Goblet Squat (Dumbbell)', note:'Hold a dumbbell at your chest, knees track over the toes, squat to a depth you control, drive up.' },
+    { name:'Romanian Deadlift (Dumbbell)', note:'Hips back, long flat back, feel the hamstrings, then stand tall.' },
+    { name:'Reverse or Walking Lunge (Dumbbell)', note:'Front knee over the ankle, drive through the front heel.' },
+    { name:'Single-Leg Sit to Stand (toe prop)', note:'Sit on a bench or chair and stand up on one leg, using the other foot lightly on a prop for just enough help. As you get stronger, use less of that foot and progress to no toe prop. Control the way down.' },
+    { name:'Single-Leg Calf Raise', note:'Your priority. Slow up and slow down, 12 to 15 reps each side.' },
+    { name:'Single-Leg Glute Bridge (weighted)', note:'One foot down, a weight across your hips, drive through the heel and squeeze the glute, lower slowly. Keep your hips level.' },
+    { name:'Resisted Side Stepping', note:'Band around your legs, sink into a quarter-squat and step sideways keeping tension the whole time. This is your hip abduction and glute medius work.' },
+    { name:'Modified Copenhagen Plank', note:'Side plank with your top leg resting on a bench or chair, lift your hips and hold, or do small lifts. Drop your bottom knee down to make it easier. This is your adductor work.' }
   ]},
-  { key:'core', label:'Full / Core', exercises:[
-    { name:'Trap Bar or DB Deadlift', note:'Flat back, push the floor away, stand tall and controlled.' },
+  { key:'core', label:'Full / Core',
+    warmup:['Cat-cow, 8 slow rounds','Worlds greatest stretch, 4 each side','Bird dog, 6 each side','Glute bridges, 12','Band pull-aparts, 15','Leg swings, each leg'],
+    stretches:['Hamstring and calf stretch, each side','Figure-4 glute stretch, each side','Open book / thoracic rotation, each side','Lat stretch (hands on a surface, hips back)','Half-kneeling hip flexor stretch, each side'],
+    exercises:[
+    { name:'Dumbbell Deadlift', note:'Flat back, push the floor away, stand tall and controlled.' },
     { name:'Loaded Carry (Farmer or Suitcase)', note:'Tall and braced, do not let the weight side bend you.' },
     { name:'Box Step Ups', note:'Drive through the whole foot, control the way down.' },
     { name:'Pallof Press (Anti-Rotation)', note:'Resist the twist, hold tall and still, then switch sides.' },
@@ -753,7 +773,7 @@ function renderStrength(){
     return '<button class="str-day-btn' + (strDay === d.key ? ' active' : '') + '" onclick="setStrDay(\'' + d.key + '\')">' + d.label + '</button>';
   }).join('');
   const day = strengthDays.find(function(d){ return d.key === strDay; }) || strengthDays[0];
-  document.getElementById('str-list').innerHTML = day.exercises.map(function(ex, i){
+  var _ex = day.exercises.map(function(ex, i){
     const sets = strSets(day.key, i);
     const rows = sets.map(function(s, ri){
       return '<div class="str-row"><span class="str-rn">R' + (ri+1) + '</span>' +
@@ -763,6 +783,16 @@ function renderStrength(){
     return '<div class="str-card"><div class="str-name">' + ex.name + '</div><div class="str-cue">' + ex.note + '</div>' +
       '<div class="str-log">' + rows + '<button class="str-add" onclick="strAddRound(\'' + day.key + '\',' + i + ')">+ round</button></div></div>';
   }).join('');
+  var _wu = '<div class="str-phase"><div class="str-phase-h">Warm-Up</div>'
+    + '<div class="str-phase-sub">1 &middot; Get the heart rate up (about 5 min)</div>'
+    + '<p class="str-phase-p">' + warmupCardio + '</p>'
+    + '<div class="str-phase-sub">2 &middot; Dynamic warm-up &mdash; optional, pick what you like</div>'
+    + '<ul class="str-phase-ul">' + day.warmup.map(function(w){ return '<li>' + w + '</li>'; }).join('') + '</ul></div>';
+  var _cd = '<div class="str-phase"><div class="str-phase-h">Cool-Down</div>'
+    + '<p class="str-phase-p">' + cooldownText + '</p>'
+    + '<div class="str-phase-sub">Static stretches &mdash; hold 20 to 30 sec each</div>'
+    + '<ul class="str-phase-ul">' + day.stretches.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></div>';
+  document.getElementById('str-list').innerHTML = _wu + _ex + _cd;
 }
 
 // ---------- NAVIGATION ----------
