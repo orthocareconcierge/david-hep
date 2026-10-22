@@ -700,9 +700,9 @@ const strengthDays = [
     stretches:['Hamstring and calf stretch, each side','Figure-4 glute stretch, each side','Open book / thoracic rotation, each side','Lat stretch (hands on a surface, hips back)','Half-kneeling hip flexor stretch, each side'],
     exercises:[
     { name:'Kickstand RDL (Dumbbell)', note:'One foot just behind as a light kickstand, most of your weight on the front leg. Hinge your hips back, flat back, lower the weight along the front leg, then drive the hips forward to stand tall and squeeze the glute.' },
-    { name:'Loaded Carry (Farmer or Suitcase)', note:'Tall and braced, do not let the weight side bend you.' },
+    { name:'Loaded Carry (Farmer or Suitcase)', note:'Tall and braced, do not let the weight side bend you.', metric:'time or dist' },
     { name:'Box Step Ups', note:'Drive through the whole foot, control the way down.' },
-    { name:'Pallof Press (Anti-Rotation)', note:'Resist the twist, hold tall and still, then switch sides.' },
+    { name:'Pallof Press (Anti-Rotation)', note:'Anchor a band at about chest height and stand side-on to it, feet shoulder-width, knees soft. Hold the handle at your breastbone with both hands. Brace your core and press the band straight out in front of you. The band is pulling you to twist toward the anchor, and your job is to not let it rotate you at all. Hold a beat with your arms fully straight, then bring your hands back to your chest under control. Keep your hips and shoulders square the whole time, ribs down, glutes tight. Finish your reps, then turn to face the other way and work the other side.' },
     { name:'Side Plank', note:'Straight line, hips high and stacked, do not let the bottom hip drop.' },
     { name:'Dead Bug or Bird Dog', note:'Move from a braced trunk with the back flat.' }
   ]}
@@ -775,9 +775,11 @@ function renderStrength(){
   const day = strengthDays.find(function(d){ return d.key === strDay; }) || strengthDays[0];
   var _ex = day.exercises.map(function(ex, i){
     const sets = strSets(day.key, i);
+    const metric = ex.metric || 'reps';
+    const mInput = ex.metric ? '' : ' inputmode="numeric"';
     const rows = sets.map(function(s, ri){
       return '<div class="str-row"><span class="str-rn">R' + (ri+1) + '</span>' +
-        '<input class="str-in" inputmode="numeric" placeholder="reps" value="' + (s.reps || '') + '" onchange="strSet(\'' + day.key + '\',' + i + ',' + ri + ',\'reps\',this.value)">' +
+        '<input class="str-in"' + mInput + ' placeholder="' + metric + '" value="' + (s.reps || '') + '" onchange="strSet(\'' + day.key + '\',' + i + ',' + ri + ',\'reps\',this.value)">' +
         '<input class="str-in" placeholder="weight" value="' + (s.wt || '') + '" onchange="strSet(\'' + day.key + '\',' + i + ',' + ri + ',\'wt\',this.value)"></div>';
     }).join('');
     return '<div class="str-card"><div class="str-name">' + ex.name + '</div><div class="str-cue">' + ex.note + '</div>' +
