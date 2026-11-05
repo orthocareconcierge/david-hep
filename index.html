@@ -453,13 +453,13 @@ body {
 
     <div id="today-tab">
       <!-- DAILY SECTION -->
-      <div class="section-label">Daily &mdash; Complete All</div>
+      <div class="section-label">Daily, Complete All</div>
       <div class="card card-gold intro-card"><p id="daily-intro"></p></div>
       <div class="prog-pill" id="daily-progress">0 of 0 done today</div>
       <div id="daily-list"></div>
 
       <!-- ROTATION SECTION -->
-      <div class="section-label" style="margin-top:28px;">Rotation &mdash; Pick 3 to 4 Per Day</div>
+      <div class="section-label" style="margin-top:28px;">Rotation, Pick 3 to 4 Per Day</div>
       <div class="card card-gold intro-card"><p id="pool-intro"></p></div>
       <div class="prog-pill" id="pool-progress" onclick="poolProgressTap()">0 of 0 this rotation</div>
       <div id="pool-list"></div>
@@ -530,7 +530,7 @@ body {
   </div>
   <div class="page-content">
     <div class="section-label">Stop Immediately If</div>
-    <div class="precaution-card"><h4>Red Flags &mdash; Stop And Contact Kelly</h4><ul id="redflags-list"></ul></div>
+    <div class="precaution-card"><h4>Red Flags, Stop And Contact Kelly</h4><ul id="redflags-list"></ul></div>
     <div id="restrictions-list"></div>
     <div class="section-label">Pain Guidelines</div>
     <div class="card">
@@ -553,7 +553,7 @@ body {
   <div class="page-content">
     <div id="report-chrome">
       <div class="card card-gold intro-card">
-        <p>This is your progress log. To send it to Kelly: tap <b>Save As PDF</b> below. The print screen opens &mdash; on iPhone, tap the <b>Share</b> icon, then send the PDF to Kelly however you like (Messages or Mail).</p>
+        <p>This is your progress log. To send it to Kelly: tap <b>Save As PDF</b> below. The print screen opens, on iPhone, tap the <b>Share</b> icon, then send the PDF to Kelly however you like (Messages or Mail).</p>
       </div>
       <button class="export-btn" onclick="window.print()">&#128424; Save As PDF</button>
     </div>
@@ -619,6 +619,8 @@ const poolExercises = [
     cues: ['Lie on your back with knees bent and feet flat, hip-width apart.', 'Engage belly button to spine (your transversus abdominis brace) and tilt your pelvis under so your low back is flat on the floor. This bridge is where you combine your TrA brace and posterior pelvic tilt.', 'Press through your heels and lift your hips up, squeezing your glutes at the top. Do not drop the pelvic tilt or core engagement.', 'Drive from the glutes, not the low back. Do not arch.', 'Lower with control. Keep the rib cage down throughout.'] },
   { name: 'Sidelying Hip Abduction', rx: '12 to 15 reps · 2 sets', log: true, video: 'sidelying-leg-lift.mp4',
     cues: ['Lie on your side in a straight line, bottom knee bent for stability.', 'Lift the top leg, leading with the heel and keeping the toes pointed forward.', 'Keep your hips stacked. Do not roll backward as you lift.'] },
+  { name: 'Sidelying Clams', rx: '12 to 15 reps · 2 sets', log: true, video: '',
+    cues: ['Lie on your side with hips and knees bent and heels together.', 'Keep the heels touching and lift the top knee, opening like a clam.', 'Do not let the top hip roll back. The motion is at the hip, not the spine.', 'When this feels easy, loop a resistance band just above your knees and lift the top knee against the band.'] },
   { name: 'Eccentric Calf Progression', rx: '10 to 15 reps · 2 to 3 sets · slow 3 sec down', log: true, video: 'heel-raises.mp4',
     cues: ['Work through this progression as you get stronger. Start at the level you can control, with a slow 3-second lower on every rep.', 'Double leg: rise up onto the balls of both feet, then lower both heels down slowly.', '2 up, 1 down: rise up on both feet, shift your weight onto the working leg, then lower slowly on that one leg.', 'Single leg: rise up and lower all on one leg, staying controlled the whole way.', 'Use a wall or counter for balance. Keep the ankle tracking straight, do not let it roll outward.'] },
   { name: 'Hip Flexor Stretch (Seated)', rx: '30 sec hold \u00b7 3 reps \u00b7 each side', log: false, video: '',
@@ -627,6 +629,8 @@ const poolExercises = [
     cues: ['Sit tall in a chair and cross the ankle of the side you are stretching over the opposite knee, making a figure 4.', 'Keep your back straight and gently hinge forward at the hips until you feel a stretch deep in the glute.', 'You can add a gentle press down on the crossed knee for a deeper stretch.', 'Keep it gentle and breathe. Do not round your low back or force it.'] },
   { name: 'Seated Hamstring Stretch', rx: '30 sec hold \u00b7 3 reps \u00b7 each side', log: false, video: '',
     cues: ['Sit on the edge of a chair and extend one leg straight out in front of you, heel on the floor and toes up.', 'Sit tall and hinge forward from your hips, keeping your back long and flat.', 'Reach toward the toes of the straight leg until you feel a stretch down the back of the thigh.', 'Keep the back flat, not rounded. Hold and breathe, then switch sides.'] },
+  { name: 'QL Release on Foam Roller', rx: '30 to 60 sec \u00b7 per side \u00b7 1 to 2x daily', log: false, video: '',
+    cues: ['Lie on your side with a foam roller under the side of your waist, in the gap between the bottom of your rib cage and the top of your hip.', 'Prop up on your bottom forearm and let your body relax so your weight settles onto the roller.', 'Slowly roll a small range up and down over that soft area on the side of your low back, pausing on tender spots and breathing until they ease.', 'Keep it gentle and stay on the muscle at the side. Do not roll directly on your spine or the bony parts. Do both sides.'] },
   { name: 'Hinge and Squat', rx: '10 reps · 2 sets', log: true, video: 'hinge-and-squat.mp4',
     cues: ['Use a pole for guidance along your spine. Slight bend to your knees and tilt your pelvis under so your low back is flat against the pole. As much of your spine and the back of your head should be touching the pole.', 'Start by hinging at the hips, pushing your bottom back and bending at the waist, keeping your spine in one long line.', 'Then bend your knees to descend into a squat, knees tracking over your toes.', 'Drive through your heels and glutes to stand. The hinge initiates the movement, not the squat.'] },
   { name: 'Standing Multifidi', rx: '5 sec holds · 10 reps · 2 sets', log: false, video: 'standing-multifidi.mp4',
@@ -788,11 +792,11 @@ function renderStrength(){
   var _wu = '<div class="str-phase"><div class="str-phase-h">Warm-Up</div>'
     + '<div class="str-phase-sub">1 &middot; Get the heart rate up (about 5 min)</div>'
     + '<p class="str-phase-p">' + warmupCardio + '</p>'
-    + '<div class="str-phase-sub">2 &middot; Dynamic warm-up &mdash; optional, pick what you like</div>'
+    + '<div class="str-phase-sub">2 &middot; Dynamic warm-up, optional, pick what you like</div>'
     + '<ul class="str-phase-ul">' + day.warmup.map(function(w){ return '<li>' + w + '</li>'; }).join('') + '</ul></div>';
   var _cd = '<div class="str-phase"><div class="str-phase-h">Cool-Down</div>'
     + '<p class="str-phase-p">' + cooldownText + '</p>'
-    + '<div class="str-phase-sub">Static stretches &mdash; hold 20 to 30 sec each</div>'
+    + '<div class="str-phase-sub">Static stretches, hold 20 to 30 sec each</div>'
     + '<ul class="str-phase-ul">' + day.stretches.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></div>';
   document.getElementById('str-list').innerHTML = _wu + _ex + _cd;
 }
@@ -877,7 +881,7 @@ function exerciseCard(section, idx, ex) {
 }
 function renderLogBlock(section, idx, sets) {
   return `<div class="log-section">
-    <h5>Log Sets &mdash; Reps &amp; Load</h5>
+    <h5>Log Sets, Reps &amp; Load</h5>
     <div class="log-col-headers"><span></span><span>Reps</span><span>Load</span></div>
     <div id="sets-${section}-${idx}">${sets.map((s, si) => renderSetRow(section, idx, si, s)).join('')}</div>
     <button class="add-set-btn" onclick="addSet('${section}',${idx})">+ Add Set</button>
@@ -1203,7 +1207,7 @@ function renderReport() {
   }
   const logs = buildReportLogs();
   if (logs) h += `<div class="rep-h">Exercise Logs</div>` + logs;
-  h += `<div class="rep-foot">OrthoCare Concierge LLC &mdash; Kelly Davis<br>Proprietary &amp; Confidential</div>`;
+  h += `<div class="rep-foot">OrthoCare Concierge LLC, Kelly Davis<br>Proprietary &amp; Confidential</div>`;
   document.getElementById('print-area').innerHTML = h;
 }
 function buildReportLogs() {
