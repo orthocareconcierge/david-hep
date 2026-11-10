@@ -221,9 +221,9 @@ body {
 /* logging block */
 .log-section { margin-top: 12px; background: var(--dark); border-radius: var(--radius-sm); padding: 11px; }
 .log-section h5 { font-size: 8px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 9px; }
-.log-col-headers { display: grid; grid-template-columns: 44px 1fr 1fr; gap: 6px; margin-bottom: 4px; }
+.log-col-headers { display: grid; grid-template-columns: 44px 1fr 1fr 0.8fr; gap: 6px; margin-bottom: 4px; }
 .log-col-headers span { font-size: 8px; color: var(--muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; }
-.set-row { display: grid; grid-template-columns: 44px 1fr 1fr; gap: 6px; align-items: center; margin-bottom: 5px; }
+.set-row { display: grid; grid-template-columns: 44px 1fr 1fr 0.8fr; gap: 6px; align-items: center; margin-bottom: 5px; }
 .set-label { font-size: 10px; color: var(--muted); font-weight: 400; }
 .log-input {
   background: var(--charcoal); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;
@@ -882,8 +882,8 @@ function exerciseCard(section, idx, ex) {
 }
 function renderLogBlock(section, idx, sets) {
   return `<div class="log-section">
-    <h5>Log Sets, Reps &amp; Load</h5>
-    <div class="log-col-headers"><span></span><span>Reps</span><span>Load</span></div>
+    <h5>Log Sets, Reps, Load &amp; RPE</h5>
+    <div class="log-col-headers"><span></span><span>Reps</span><span>Load</span><span>RPE</span></div>
     <div id="sets-${section}-${idx}">${sets.map((s, si) => renderSetRow(section, idx, si, s)).join('')}</div>
     <button class="add-set-btn" onclick="addSet('${section}',${idx})">+ Add Set</button>
   </div>`;
@@ -893,6 +893,7 @@ function renderSetRow(section, idx, si, s) {
     <span class="set-label">Set ${si + 1}</span>
     <input class="log-input" type="number" inputmode="numeric" placeholder="Reps" value="${s.reps || ''}" onchange="saveSet('${section}',${idx},${si},'reps',this.value)">
     <input class="log-input" type="text" placeholder="lbs / band" value="${s.load || ''}" onchange="saveSet('${section}',${idx},${si},'load',this.value)">
+    <input class="log-input" type="text" inputmode="decimal" placeholder="RPE" value="${s.rpe || ''}" onchange="saveSet('${section}',${idx},${si},'rpe',this.value)">
   </div>`;
 }
 function toggleExercise(cid) { document.getElementById('card-' + cid)?.classList.toggle('open'); }
@@ -1064,11 +1065,11 @@ function buildExerciseLogs() {
     let m;
     if ((m = k.match(/^d-(\d{4}-\d{2}-\d{2})-ex(\d+)$/))) {
       const ex = dailyExercises[+m[2]]; const sets = hepLog[k];
-      if (ex && Array.isArray(sets) && sets.some(s => s.reps || s.load))
+      if (ex && Array.isArray(sets) && sets.some(s => s.reps || s.load || s.rpe))
         daily.push({ sort: m[1], when: formatDate(m[1]), name: ex.name, sets: sets });
     } else if ((m = k.match(/^p-r(\d+)-ex(\d+)$/))) {
       const ex = poolExercises[+m[2]]; const sets = hepLog[k];
-      if (ex && Array.isArray(sets) && sets.some(s => s.reps || s.load))
+      if (ex && Array.isArray(sets) && sets.some(s => s.reps || s.load || s.rpe))
         rot.push({ sort: +m[1], when: 'Rotation round ' + m[1], name: ex.name, sets: sets });
     }
   });
@@ -1079,8 +1080,8 @@ function buildExerciseLogs() {
   const row = e => `<div class="log-entry">
     <div class="le-when">${e.when}</div>
     <div class="le-head">${e.name}</div>
-    ${e.sets.filter(s => s.reps || s.load).map((s, i) =>
-      `<div class="le-set">Set ${i + 1}: ${s.reps || '-'} reps &nbsp;&middot;&nbsp; ${s.load || '-'}</div>`).join('')}
+    ${e.sets.filter(s => s.reps || s.load || s.rpe).map((s, i) =>
+      `<div class="le-set">Set ${i + 1}: ${s.reps || '-'} reps &nbsp;&middot;&nbsp; ${s.load || '-'}${s.rpe ? ' &nbsp;&middot;&nbsp; RPE ' + s.rpe : ''}</div>`).join('')}
   </div>`;
   let out = '';
   if (daily.length) out += `<div class="section-label">Daily Logs</div>` + daily.map(row).join('');
@@ -1217,11 +1218,11 @@ function buildReportLogs() {
     let m;
     if ((m = k.match(/^d-(\d{4}-\d{2}-\d{2})-ex(\d+)$/))) {
       const ex = dailyExercises[+m[2]], sets = hepLog[k];
-      if (ex && Array.isArray(sets) && sets.some(x => x.reps || x.load))
+      if (ex && Array.isArray(sets) && sets.some(x => x.reps || x.load || x.rpe))
         rows.push({ sort: m[1], when: formatDate(m[1]), name: ex.name, sets: sets });
     } else if ((m = k.match(/^p-r(\d+)-ex(\d+)$/))) {
       const ex = poolExercises[+m[2]], sets = hepLog[k];
-      if (ex && Array.isArray(sets) && sets.some(x => x.reps || x.load))
+      if (ex && Array.isArray(sets) && sets.some(x => x.reps || x.load || x.rpe))
         rows.push({ sort: 'z' + String(m[1]).padStart(5, '0'), when: 'Rotation round ' + m[1], name: ex.name, sets: sets });
     }
   });
@@ -1230,8 +1231,8 @@ function buildReportLogs() {
   return rows.map(e => `<div class="rep-item">
     <div class="rep-when">${e.when}</div>
     <div class="rep-line" style="font-weight:500;">${e.name}</div>
-    ${e.sets.filter(s => s.reps || s.load).map((s, i) =>
-      `<div class="rep-line" style="font-size:11.5px;color:#6B6356;">Set ${i + 1}: ${s.reps || '-'} reps &nbsp;&middot;&nbsp; ${s.load || '-'}</div>`).join('')}
+    ${e.sets.filter(s => s.reps || s.load || s.rpe).map((s, i) =>
+      `<div class="rep-line" style="font-size:11.5px;color:#6B6356;">Set ${i + 1}: ${s.reps || '-'} reps &nbsp;&middot;&nbsp; ${s.load || '-'}${s.rpe ? ' &nbsp;&middot;&nbsp; RPE ' + s.rpe : ''}</div>`).join('')}
   </div>`).join('');
 }
 
